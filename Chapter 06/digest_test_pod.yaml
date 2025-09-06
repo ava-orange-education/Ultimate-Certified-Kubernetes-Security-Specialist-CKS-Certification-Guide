@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: digest-test
+  name: digest-test
+spec:
+  containers:
+  - image: kumarvijay/cksdemorepo@sha256:22190e137d627a8b1e9721fc38d3d0c4861edd39b209636640e076e5725f57bd
+    name: digest-test

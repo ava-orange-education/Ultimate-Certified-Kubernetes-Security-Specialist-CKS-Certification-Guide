@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: audit-syscall
+spec:
+  securityContext:
+    seccompProfile:
+      type: Localhost
+      localhostProfile: audit.json
+  containers:
+  - name: audit-syscall
+     image: busybox:1.28
+     command: [ "sh", "-c", "echo 'Using audit Seccomp Profile!' && sleep 1h" ]
+    securityContext:
+      allowPrivilegeEscalation: false

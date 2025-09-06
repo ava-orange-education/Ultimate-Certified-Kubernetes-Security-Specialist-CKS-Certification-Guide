@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: default-deny
+spec:
+  securityContext:
+    seccompProfile:
+      type: Localhost
+      localhostProfile: default-deny.json
+  containers:
+  - name: default-deny
+     image: busybox:1.28
+     command: [ "sh", "-c", "echo 'Using Default-Deny Seccomp Profile!' && sleep 1h" ]
+    securityContext:
+      allowPrivilegeEscalation: false

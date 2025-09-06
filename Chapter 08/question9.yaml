@@ -1,0 +1,36 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: sa-test-role
+  namespace: sa-demo
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "configmaps", "secrets"]
+  verbs: ["get", "list", "watch"]
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: sa-test-rolebinding
+  namespace: sa-demo
+subjects:
+- kind: ServiceAccount
+  name: sa-test-demo
+  namespace: sa-demo
+roleRef:
+  kind: Role
+  name: sa-test-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sa-test-1
+  namespace: sa-demo
+spec:
+  serviceAccountName: sa-test-demo
+  containers:
+  - name: sa-test-1
+    image: nginx:latest

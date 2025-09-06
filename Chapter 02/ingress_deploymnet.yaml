@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ingress-ns
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingress-nginx
+  namespace: ingress-ns
+  labels:
+    tier: ingress-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: ingress-nginx
+  template:
+    metadata:
+      labels:
+        tier: ingress-nginx
+    spec:
+      containers:
+      - name: demo-nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-ingress-backend
+  namespace: ingress-ns
+spec:
+  selector:
+    tier: ingress-nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

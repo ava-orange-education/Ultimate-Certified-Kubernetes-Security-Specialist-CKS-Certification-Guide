@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Config
+clusters:
+- cluster:
+    certificate-authority: /etc/kubernetes/imagepolicy-webhook/ server.crt
+    server: https://<External Server IP>:<PORT>
+  name: webhook
+users:
+- name: webhook-user
+  user:
+    client-certificate: /etc/kubernetes/pki/apiserver.crt
+    client-key: /etc/kubernetes/pki/apiserver.key
+contexts:
+- context:
+    cluster: webhook
+    user: webhook-user
+  name: webhook
+current-context: webhook

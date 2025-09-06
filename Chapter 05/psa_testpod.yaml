@@ -1,0 +1,54 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox-enforce-restrict
+  namespace: psa-enforce-restrict
+spec:
+  containers:
+  - image: busybox:latest
+    name: busybox-enforce-restrict
+    command: ["sh", "-c", "sleep 3600"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox-audit-restrict
+  namespace: psa-audit-restrict
+spec:
+  containers:
+  - image: busybox:latest
+    name: busybox-audit-restrict
+    command: ["sh", "-c", "sleep 3600"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox-enforce-privileged
+  namespace: psa-enforce-privileged
+spec:
+  containers:
+  - image: busybox:latest
+    name: busybox-enforce-privileged
+    command: ["sh", "-c", "sleep 3600"]
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox-enforce-restrict
+  namespace: psa-enforce-restrict
+spec:
+  containers:
+  - image: busybox:latest
+    name: busybox-enforce-restrict
+    command: ["sh", "-c", "sleep 3600"]
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+      runAsNonRoot: true
+      runAsUser: 4000
+      runAsGroup: 4000
+      seccompProfile:
+        type: RuntimeDefault

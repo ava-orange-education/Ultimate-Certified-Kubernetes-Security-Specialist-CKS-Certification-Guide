@@ -1,0 +1,28 @@
+---
+apiVersion: networking.k8s.io/v1 
+kind: NetworkPolicy 
+metadata: 
+  name: deny-single-ip 
+  namespace: backend 
+spec: 
+  podSelector: {}
+  policyTypes: 
+    - Egress 
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 169.254.169.254/32
+---
+apiVersion: networking.k8s.io/v1 
+kind: NetworkPolicy 
+metadata: 
+  name: deny-single-ip 
+  namespace: frontend 
+spec: 
+  podSelector: {}
+  policyTypes: 
+    - Egress 
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 169.254.169.254/32

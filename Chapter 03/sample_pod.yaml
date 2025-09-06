@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sa-test
+  namespace: sa-demo
+spec:
+  containers:
+  - name: sa-test
+    image: nginx:latest

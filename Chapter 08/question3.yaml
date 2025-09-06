@@ -1,0 +1,87 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all-egress
+  namespace: frontend
+spec:
+  podSelector: {} 
+  policyTypes:
+    - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all-egress
+  namespace: backend
+spec:
+  podSelector: {} 
+  policyTypes:
+    - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all-egress
+  namespace: database
+spec:
+  podSelector: {} 
+  policyTypes:
+    - Egress
+---
+apiVersion: networking.k8s.io/v1 
+kind: NetworkPolicy 
+metadata: 
+  name: allow-database-to-backend 
+  namespace: database 
+spec: 
+  podSelector:
+    matchLabels: 
+       tier: database 
+  policyTypes: 
+    - Egress 
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          tier: backend 
+    - podSelector:
+        matchLabels:
+          tier: backend
+---
+apiVersion: networking.k8s.io/v1 
+kind: NetworkPolicy 
+metadata: 
+  name: allow-backend-to-frontend 
+  namespace: backend
+spec: 
+  podSelector:
+    matchLabels: 
+       tier: backend 
+  policyTypes: 
+    - Egress 
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          tier: frontend 
+    - podSelector:
+        matchLabels:
+          tier: frontend
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: database
+    tier: database
+  name: database-test
+  namespace: database
+spec:
+  containers:
+  - image: alpine:latest
+    name: database-test
+    args:
+    - /bin/sh
+    - -c
+    - while true; do sleep 5; done;
